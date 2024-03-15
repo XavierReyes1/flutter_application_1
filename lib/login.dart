@@ -5,7 +5,7 @@ import 'package:flutter_application_1/registro.dart';
 
 
 class Login extends StatefulWidget {
-  Login({Key? key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -35,7 +35,7 @@ class _LoginState extends State<Login> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Center(
+            const Center(
               child: FlutterLogo(size: 100),
             ),
             const SizedBox(height: 16),
@@ -70,14 +70,15 @@ class _LoginState extends State<Login> {
                     bool credencialesValidas = validarCredenciales(email, contra);
 
                     if (credencialesValidas) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => inicio()),
-                      );
+                     Navigator.push(
+                              context,
+                               MaterialPageRoute(builder: (context) => inicio(emailController.text)),
+                                );
+
                     } else {
                       // Mostrar mensaje de error
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Credenciales inválidas')),
+                       const SnackBar(content: Text('Credenciales inválidas')),
                       );
                     }
                   },
