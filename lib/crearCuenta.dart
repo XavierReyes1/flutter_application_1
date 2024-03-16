@@ -7,7 +7,7 @@ class CrearCuenta extends StatelessWidget {
   final TextEditingController correoController = TextEditingController();
   final TextEditingController telefonoController = TextEditingController();
   final TextEditingController contraController = TextEditingController();
-
+final TextEditingController confirmaContraController = TextEditingController();
   final void Function(Usuario) onUsuarioCreado;
 
   CrearCuenta({required this.onUsuarioCreado});
@@ -62,9 +62,33 @@ class CrearCuenta extends StatelessWidget {
                 border: OutlineInputBorder(),
               ),
             ),
+              const SizedBox(height: 16),
+            TextField(
+              controller: confirmaContraController,
+              maxLength: 30,
+              keyboardType: TextInputType.text,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Confirmar Contraseña',
+                border: OutlineInputBorder(),
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
-                Usuario nuevoUsuario = Usuario(
+                if(nombreController.text.isEmpty || correoController.text.isEmpty ||
+                 telefonoController.text.isEmpty || contraController.text.isEmpty ||
+                 confirmaContraController.text.isEmpty){
+                
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("falta rellenar campos")));
+                }
+               
+                else{
+                    if (confirmaContraController.text != contraController.text) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("No coinden las contraseñas")));
+                  
+                }
+                else{
+                     Usuario nuevoUsuario = Usuario(
                   nombre: nombreController.text,
                   correo: correoController.text,
                   telefono: int.tryParse(telefonoController.text) ?? 0,
@@ -72,8 +96,12 @@ class CrearCuenta extends StatelessWidget {
                 );
                 onUsuarioCreado(nuevoUsuario);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Usuario creado con éxito')),
+                  const SnackBar(content: Text('Usuario creado con éxito')),
                 );
+                }
+              
+                };
+               
               },
               child: const Text('Crear cuenta'),
             ),
