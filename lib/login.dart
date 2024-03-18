@@ -35,6 +35,7 @@ class _LoginState extends State<Login> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(key: formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
           children: [
             Center(
@@ -45,17 +46,14 @@ class _LoginState extends State<Login> {
               controller: emailController,
               maxLength: 30,
               validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'El nombre es obligatorio';
-                    }
-                   else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(emailController.text)) {
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(emailController.text)) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Correo electrónico no válido")));
     
                     }
                   
                     return null;
                   },
-              keyboardType: TextInputType.text,
+              keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: 'Email',
                 prefixIcon: Icon(Icons.email),
