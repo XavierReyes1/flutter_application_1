@@ -82,26 +82,27 @@ class _CrearCuentaState extends State<CrearCuenta> {
                   labelText: 'Confirmar Contraseña',
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) { // Llamamos al método validate para verificar las validaciones
-                      if (confirmaContraController.text != contraController.text) {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("No coinciden las contraseñas")));
-                      } else {
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  if (confirmaContraController.text != contraController.text) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("No coinciden las contraseñas")));
+                  } else {
                         Usuario nuevoUsuario = Usuario(
-                          nombre: nombreController.text,
-                          correo: correoController.text,
-                          telefono: int.tryParse(telefonoController.text) ?? 0,
-                          contrasena: contraController.text,
-                        );
-                        widget.onUsuarioCreado(nuevoUsuario);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Usuario creado con éxito')),
-                        );
-                      }
-                    }
-                  },
-                  child: const Text('Crear cuenta'),
-                ),
+                        nombre: nombreController.text,
+                        correo: correoController.text,
+                        telefono: int.tryParse(telefonoController.text) ?? 0,
+                        contrasena: contraController.text,
+                    );
+                  widget.onUsuarioCreado(nuevoUsuario);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Usuario creado con éxito')),
+                );
+                Navigator.of(context).pop(); // Esta línea agrega la funcionalidad para volver a la página anterior
+                }
+                }   
+                },
+              child: const Text('Crear cuenta'),
+              ),
               ],
             ),
           ),
