@@ -42,17 +42,9 @@ class _LoginState extends State<Login> {
               child: FlutterLogo(size: 100),
             ),
             const SizedBox(height: 16),
-            TextFormField(
+            TextField(
               controller: emailController,
               maxLength: 30,
-              validator: (value) {
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(emailController.text)) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Correo electrónico no válido")));
-    
-                    }
-                  
-                    return null;
-                  },
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: 'Email',
