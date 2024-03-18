@@ -15,7 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final emailController = TextEditingController();
   final contraController = TextEditingController();
-
+    final formKey = GlobalKey<FormState>();
   
   List<Usuario> usuarios = [
     Usuario(
@@ -34,15 +34,27 @@ class _LoginState extends State<Login> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: Form(key: formKey,
+          child: Column(
           children: [
             Center(
               child: FlutterLogo(size: 100),
             ),
             const SizedBox(height: 16),
-            TextField(
+            TextFormField(
               controller: emailController,
               maxLength: 30,
+              validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'El nombre es obligatorio';
+                    }
+                   else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(emailController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Correo electrónico no válido")));
+    
+                    }
+                  
+                    return null;
+                  },
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'Email',
@@ -88,7 +100,7 @@ class _LoginState extends State<Login> {
               ],
             ),
           ],
-        ),
+        ),),
       ),
     );
   }

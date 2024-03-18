@@ -45,9 +45,21 @@ class CrearCuenta extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextField(
+                TextFormField(
                   controller: telefonoController,
                   maxLength: 10,
+                   validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'El Número de Teléfono es obligatorio';
+                    }
+
+                    for (int i = 0; i < value.length; i++) {
+                     if (int.tryParse(value[i]) == null) {
+                    return 'El Número de Teléfono debe contener solo números';
+                    }
+                  }
+                    return null;
+                  },
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     labelText: 'Teléfono',
