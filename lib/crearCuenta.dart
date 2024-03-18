@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/password.dart';
 import 'package:flutter_application_1/registro.dart';
+class CrearCuenta extends StatefulWidget {
+  final void Function(Usuario) onUsuarioCreado;
 
+  CrearCuenta({required this.onUsuarioCreado});
 
-class CrearCuenta extends StatelessWidget {
+  @override
+  _CrearCuentaState createState() => _CrearCuentaState();
+}
+
+class _CrearCuentaState extends State<CrearCuenta> {
   final TextEditingController nombreController = TextEditingController();
   final TextEditingController correoController = TextEditingController();
   final TextEditingController telefonoController = TextEditingController();
   final TextEditingController contraController = TextEditingController();
   final TextEditingController confirmaContraController = TextEditingController();
-  final void Function(Usuario) onUsuarioCreado;
-
-  CrearCuenta({required this.onUsuarioCreado});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +28,11 @@ class CrearCuenta extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Form(
+            key: _formKey, 
+             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               children: [
-                TextField(
+                TextFormField(
                   controller: nombreController,
                   maxLength: 30,
                   keyboardType: TextInputType.text,
@@ -33,9 +40,10 @@ class CrearCuenta extends StatelessWidget {
                     labelText: 'Nombre',
                     border: OutlineInputBorder(),
                   ),
+                  
                 ),
                 const SizedBox(height: 16),
-                TextField(
+                TextFormField(
                   controller: correoController,
                   maxLength: 30,
                   keyboardType: TextInputType.emailAddress,
@@ -43,12 +51,20 @@ class CrearCuenta extends StatelessWidget {
                     labelText: 'Correo',
                     border: OutlineInputBorder(),
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, ingresa un correo electrónico.';
+                    }
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                      return 'Por favor, ingresa un correo electrónico válido.';
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: telefonoController,
                   maxLength: 10,
-                  
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     labelText: 'Teléfono',
@@ -61,16 +77,13 @@ class CrearCuenta extends StatelessWidget {
                   labelText: 'Contraseña',
                 ),
                 const SizedBox(height: 16),
-               contraField(
+                contraField(
                   controller: confirmaContraController,
-                  labelText: 'Confirmar Contraseña',),
+                  labelText: 'Confirmar Contraseña',
+                ),
                 ElevatedButton(
                   onPressed: () {
-                    if(nombreController.text.isEmpty || correoController.text.isEmpty ||
-                     telefonoController.text.isEmpty || contraController.text.isEmpty ||
-                     confirmaContraController.text.isEmpty){
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("falta rellenar campos")));
-                    } else {
+                    if (_formKey.currentState!.validate()) { // Llamamos al método validate para verificar las validaciones
                       if (confirmaContraController.text != contraController.text) {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("No coinciden las contraseñas")));
                       } else {
@@ -80,7 +93,7 @@ class CrearCuenta extends StatelessWidget {
                           telefono: int.tryParse(telefonoController.text) ?? 0,
                           contrasena: contraController.text,
                         );
-                        onUsuarioCreado(nuevoUsuario);
+                        widget.onUsuarioCreado(nuevoUsuario);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Usuario creado con éxito')),
                         );

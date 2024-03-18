@@ -16,15 +16,24 @@ class contraFieldState extends State<contraField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
       maxLength: 11,
       keyboardType: TextInputType.text,
       obscureText: _obscureText,
-     
+       validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor, ingresa una contraseña.';
+                  }
+                  if (int.tryParse(value) == null) {
+                    return 'La contraseña debe contener solo números.';
+                  }
+                  return null;
+                },
       decoration: InputDecoration(
         labelText: widget.labelText,
         border: OutlineInputBorder(),
+        
         prefixIcon: Icon(Icons.lock),
         suffixIcon: IconButton(
           onPressed: () {
