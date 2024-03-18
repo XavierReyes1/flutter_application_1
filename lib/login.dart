@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/crearCuenta.dart';
 import 'package:flutter_application_1/inicio.dart';
+import 'package:flutter_application_1/password.dart';
 import 'package:flutter_application_1/registro.dart';
 
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -35,7 +36,7 @@ class _LoginState extends State<Login> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const Center(
+            Center(
               child: FlutterLogo(size: 100),
             ),
             const SizedBox(height: 16),
@@ -45,20 +46,12 @@ class _LoginState extends State<Login> {
               keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'Email',
+                prefixIcon: Icon(Icons.email),
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 16),
-            TextField(
-              controller: contraController,
-              maxLength: 30,
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
-              ),
-            ),
+           contraField(controller: contraController, labelText: "Contraseña"),
             Row(
               children: [
                 const SizedBox(height: 16),
@@ -70,15 +63,14 @@ class _LoginState extends State<Login> {
                     bool credencialesValidas = validarCredenciales(email, contra);
 
                     if (credencialesValidas) {
-                     Navigator.push(
-                              context,
-                               MaterialPageRoute(builder: (context) => inicio(emailController.text)),
-                                );
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>inicio(emailController.text) ),
+                      );
                     } else {
                       // Mostrar mensaje de error
                       ScaffoldMessenger.of(context).showSnackBar(
-                       const SnackBar(content: Text('Credenciales inválidas')),
+                        SnackBar(content: Text('Credenciales inválidas')),
                       );
                     }
                   },
