@@ -18,7 +18,7 @@ class contraFieldState extends State<contraField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
-      maxLength: 30,
+      maxLength: 11,
       keyboardType: TextInputType.text,
       obscureText: _obscureText,
       decoration: InputDecoration(
